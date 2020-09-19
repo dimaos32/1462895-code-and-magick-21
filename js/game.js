@@ -4,8 +4,8 @@ const fireballSize = 22;
 const wizardSpeed = 3;
 const wizardWidth = 70;
 
-const getFireballSpeed = function (ifTurnLeft) {
-  return ifTurnLeft ? 2 : 5;
+const getFireballSpeed = function (isTurnLeft) {
+  return isTurnLeft ? 2 : 5;
 };
 
 const getWizardHeight = function () {
