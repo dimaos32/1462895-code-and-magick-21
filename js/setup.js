@@ -9,7 +9,7 @@ const DB_WIZARDS = {
     `Виктор`,
     `Юлия`,
     `Люпита`,
-    `Вашингтон`
+    `Вашингтон`,
   ],
   surname: [
     `да Марья`,
@@ -19,7 +19,7 @@ const DB_WIZARDS = {
     `Онопко`,
     `Топольницкая`,
     `Нионго`,
-    `Ирвинг`
+    `Ирвинг`,
   ],
   coatColor: [
     `rgb(101, 137, 164)`,
@@ -27,16 +27,18 @@ const DB_WIZARDS = {
     `rgb(146, 100, 161)`,
     `rgb(56, 159, 117)`,
     `rgb(215, 210, 55)`,
-    `rgb(0, 0, 0)`
+    `rgb(0, 0, 0)`,
   ],
   eyesColor: [
     `black`,
     `red`,
     `blue`,
     `yellow`,
-    `green`
+    `green`,
   ]
 };
+
+const WIZARDS_QUANTITY = 4;
 
 const setup = document.querySelector(`.setup`);
 const setupSimilarList = setup.querySelector(`.setup-similar-list`);
@@ -46,52 +48,48 @@ const wizardTemplate = document.querySelector(`#similar-wizard-template`)
 
 const fragment = document.createDocumentFragment();
 
-let wizards;
-
 const getRandomArrayElements = (arr, n = 1) => {
-  let randomArray = [];
+  const randomArray = [];
 
   for (let i = 0; i < arr.length && i < n; i++) {
-    const ELEMENT = window.getRandomIntNumber(i, arr.length - 1);
-    randomArray.push(arr[ELEMENT]);
-    const SWAP = arr[ELEMENT];
-    arr[ELEMENT] = arr[i];
-    arr[i] = SWAP;
+    const element = window.getRandomIntNumber(i, arr.length - 1);
+    randomArray.push(arr[element]);
+    const swap = arr[element];
+    arr[element] = arr[i];
+    arr[i] = swap;
   }
 
   return randomArray;
 };
 
 const createRandomWizards = (n = 4) => {
-  let RandomWizards = [];
+  const randomWizards = [];
 
-  const NAMES = getRandomArrayElements(DB_WIZARDS.name, n);
-  const SURNAMES = getRandomArrayElements(DB_WIZARDS.surname, n);
+  const names = getRandomArrayElements(DB_WIZARDS.name, n);
+  const surnames = getRandomArrayElements(DB_WIZARDS.surname, n);
 
   for (let i = 0; i < n && i < DB_WIZARDS.name.length && i < DB_WIZARDS.surname.length; i++) {
-    let wizard = {
-      name: NAMES[i] + ` ` + SURNAMES[i],
+    randomWizards.push({
+      name: `${names[i]} ${surnames[i]}`,
       coatColor: DB_WIZARDS.coatColor[window.getRandomIntNumber(0, DB_WIZARDS.coatColor.length - 1)],
       eyesColor: DB_WIZARDS.eyesColor[window.getRandomIntNumber(0, DB_WIZARDS.eyesColor.length - 1)]
-    };
-
-    RandomWizards.push(wizard);
+    });
   }
 
-  return RandomWizards;
+  return randomWizards;
 };
 
 const renderWizard = (wizard) => {
-  let wizardPreSet = wizardTemplate.cloneNode(true);
+  const wizardPreset = wizardTemplate.cloneNode(true);
 
-  wizardPreSet.querySelector(`.setup-similar-label`).textContent = wizard.name;
-  wizardPreSet.querySelector(`.wizard-coat`).style.fill = wizard.coatColor;
-  wizardPreSet.querySelector(`.wizard-eyes`).style.fill = wizard.eyesColor;
+  wizardPreset.querySelector(`.setup-similar-label`).textContent = wizard.name;
+  wizardPreset.querySelector(`.wizard-coat`).style.fill = wizard.coatColor;
+  wizardPreset.querySelector(`.wizard-eyes`).style.fill = wizard.eyesColor;
 
-  return wizardPreSet;
+  return wizardPreset;
 };
 
-wizards = createRandomWizards();
+const wizards = createRandomWizards(WIZARDS_QUANTITY);
 
 for (let i = 0; i < wizards.length; i++) {
   fragment.append(renderWizard(wizards[i]));
