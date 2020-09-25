@@ -45,12 +45,12 @@ const getMaxElement = function (arr) {
   return maxElement;
 };
 
-const getRandomIntNumber = (min = 0, max = 100) => {
+window.getRandomIntNumber = (min = 0, max = 100) => {
   return min + Math.floor(Math.random() * (max - min + 1));
 };
 
 const ramdomBlueColor = () => {
-  return `hsl(240, ${getRandomIntNumber()}%, 50%)`;
+  return `hsl(240, ${window.getRandomIntNumber()}%, 50%)`;
 };
 
 window.renderStatistics = function (ctx, names, times) {
