@@ -35,10 +35,20 @@ const DB_WIZARDS = {
     `blue`,
     `yellow`,
     `green`,
-  ]
+  ],
+  fireballColor: [
+    `#ee4830`,
+    `#e6e848`,
+    `#30a8ee`,
+    `#5ce6c0`,
+    `#e848d5`,
+  ],
 };
 
 const WIZARDS_QUANTITY = 4;
+
+const MIN_NAME_LENGTH = 2;
+const MAX_NAME_LENGTH = 25;
 
 const setup = document.querySelector(`.setup`);
 const setupOpen = document.querySelector(`.setup-open`);
@@ -48,6 +58,7 @@ const wizardTemplate = document.querySelector(`#similar-wizard-template`)
   .content
   .querySelector(`.setup-similar-item`);
 const fragment = document.createDocumentFragment();
+const userNameInput = document.querySelector('.setup-user-name');
 
 const getRandomArrayElements = (arr, n = 1) => {
   const randomArray = [];
@@ -137,4 +148,18 @@ setupClose.addEventListener(`keydown`, function (evt) {
     evt.preventDefault();
     closePopup(setup);
   }
+});
+
+userNameInput.addEventListener(`input`, () => {
+  var valueLength = userNameInput.value.length;
+
+  if (valueLength < MIN_NAME_LENGTH) {
+    userNameInput.setCustomValidity(`Еще ${MIN_NAME_LENGTH - valueLength} символов`);
+  } else if (valueLength > MAX_NAME_LENGTH) {
+    userNameInput.setCustomValidity(`Удалите лишние ${valueLength - MAX_NAME_LENGTH} символов`);
+  } else {
+    userNameInput.setCustomValidity(``);
+  }
+
+  userNameInput.reportValidity();
 });
