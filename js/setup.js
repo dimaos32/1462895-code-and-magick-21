@@ -112,31 +112,37 @@ const onSetupEscPress = (evt) => {
     evt.preventDefault();
     closePopup(setup);
   }
-}
+};
 
 const openPopup = (popup) => {
   popup.classList.remove(`hidden`);
   document.addEventListener(`keydown`, onSetupEscPress);
-}
+};
 
 const closePopup = (popup) => {
   popup.classList.add(`hidden`);
   document.removeEventListener(`keydown`, onSetupEscPress);
-}
+};
 
 const getRandomCoatColor = () => {
-  wizardCoatColor.style.fill = DB_WIZARDS.coatColor[window.getRandomIntNumber(0, DB_WIZARDS.coatColor.length - 1)];
-  wizardCoatColorInput.value = wizardCoatColor.style.fill;
+  const color = DB_WIZARDS.coatColor[window.getRandomIntNumber(0, DB_WIZARDS.coatColor.length - 1)];
+
+  wizardCoatColor.style.fill = color;
+  wizardCoatColorInput.value = color;
 };
 
 const getRandomEyesColor = () => {
-  wizardEyesColor.style.fill = DB_WIZARDS.eyesColor[window.getRandomIntNumber(0, DB_WIZARDS.eyesColor.length - 1)];
-  wizardEyesColorInput.value = wizardEyesColor.style.fill;
+  const color = DB_WIZARDS.eyesColor[window.getRandomIntNumber(0, DB_WIZARDS.eyesColor.length - 1)];
+
+  wizardEyesColor.style.fill = color;
+  wizardEyesColorInput.value = color;
 };
 
 const getRandomfireballColor = () => {
-  fireballColor.style.backgroundColor = DB_WIZARDS.fireballColor[window.getRandomIntNumber(0, DB_WIZARDS.fireballColor.length - 1)];
-  fireballColorInput.value = fireballColor.style.backgroundColor;
+  const color = DB_WIZARDS.fireballColor[window.getRandomIntNumber(0, DB_WIZARDS.fireballColor.length - 1)];
+
+  fireballColor.style.backgroundColor = color;
+  fireballColorInput.value = color;
 };
 
 const wizards = createRandomWizards(WIZARDS_QUANTITY);
@@ -176,7 +182,7 @@ wizardEyesColor.addEventListener(`click`, getRandomEyesColor);
 fireballColor.addEventListener(`click`, getRandomfireballColor);
 
 userNameInput.addEventListener(`input`, () => {
-  var valueLength = userNameInput.value.length;
+  const valueLength = userNameInput.value.length;
 
   if (valueLength < MIN_NAME_LENGTH) {
     userNameInput.setCustomValidity(`Еще ${MIN_NAME_LENGTH - valueLength} символов`);
