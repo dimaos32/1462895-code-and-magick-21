@@ -41,11 +41,12 @@ const DB_WIZARDS = {
 const WIZARDS_QUANTITY = 4;
 
 const setup = document.querySelector(`.setup`);
+const setupOpen = document.querySelector(`.setup-open`);
+const setupClose = setup.querySelector(`.setup-close`);
 const setupSimilarList = setup.querySelector(`.setup-similar-list`);
 const wizardTemplate = document.querySelector(`#similar-wizard-template`)
   .content
   .querySelector(`.setup-similar-item`);
-
 const fragment = document.createDocumentFragment();
 
 const getRandomArrayElements = (arr, n = 1) => {
@@ -89,6 +90,23 @@ const renderWizard = (wizard) => {
   return wizardPreset;
 };
 
+const onSetupEscPress = (evt) => {
+  if (evt.key === `Escape`) {
+    evt.preventDefault();
+    closePopup(setup);
+  }
+}
+
+const openPopup = (popup) => {
+  popup.classList.remove(`hidden`);
+  document.addEventListener(`keydown`, onSetupEscPress);
+}
+
+const closePopup = (popup) => {
+  popup.classList.add(`hidden`);
+  document.removeEventListener(`keydown`, onSetupEscPress);
+}
+
 const wizards = createRandomWizards(WIZARDS_QUANTITY);
 
 for (let i = 0; i < wizards.length; i++) {
@@ -97,5 +115,26 @@ for (let i = 0; i < wizards.length; i++) {
 
 setupSimilarList.append(fragment);
 
-setup.classList.remove(`hidden`);
 setup.querySelector(`.setup-similar`).classList.remove(`hidden`);
+
+setupOpen.addEventListener(`click`, function () {
+  openPopup(setup);
+});
+
+setupOpen.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    evt.preventDefault();
+    openPopup(setup);
+  }
+});
+
+setupClose.addEventListener(`click`, function () {
+  closePopup(setup);
+});
+
+setupClose.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    evt.preventDefault();
+    closePopup(setup);
+  }
+});
