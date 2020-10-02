@@ -58,7 +58,13 @@ const wizardTemplate = document.querySelector(`#similar-wizard-template`)
   .content
   .querySelector(`.setup-similar-item`);
 const fragment = document.createDocumentFragment();
-const userNameInput = document.querySelector('.setup-user-name');
+const userNameInput = document.querySelector(`.setup-user-name`);
+const wizardCoatColor = setup.querySelector(`.setup-wizard .wizard-coat`);
+const wizardCoatColorInput = setup.querySelector(`input[name = coat-color]`);
+const wizardEyesColor = setup.querySelector(`.setup-wizard .wizard-eyes`);
+const wizardEyesColorInput = setup.querySelector(`input[name = eyes-color]`);
+const fireballColor = setup.querySelector(`.setup-fireball-wrap`);
+const fireballColorInput = setup.querySelector(`input[name = fireball-color]`);
 
 const getRandomArrayElements = (arr, n = 1) => {
   const randomArray = [];
@@ -102,7 +108,7 @@ const renderWizard = (wizard) => {
 };
 
 const onSetupEscPress = (evt) => {
-  if (evt.key === `Escape`) {
+  if (evt.key === `Escape` && userNameInput !== document.activeElement) {
     evt.preventDefault();
     closePopup(setup);
   }
@@ -117,6 +123,21 @@ const closePopup = (popup) => {
   popup.classList.add(`hidden`);
   document.removeEventListener(`keydown`, onSetupEscPress);
 }
+
+const getRandomCoatColor = () => {
+  wizardCoatColor.style.fill = DB_WIZARDS.coatColor[window.getRandomIntNumber(0, DB_WIZARDS.coatColor.length - 1)];
+  wizardCoatColorInput.value = wizardCoatColor.style.fill;
+};
+
+const getRandomEyesColor = () => {
+  wizardEyesColor.style.fill = DB_WIZARDS.eyesColor[window.getRandomIntNumber(0, DB_WIZARDS.eyesColor.length - 1)];
+  wizardEyesColorInput.value = wizardEyesColor.style.fill;
+};
+
+const getRandomfireballColor = () => {
+  fireballColor.style.backgroundColor = DB_WIZARDS.fireballColor[window.getRandomIntNumber(0, DB_WIZARDS.fireballColor.length - 1)];
+  fireballColorInput.value = fireballColor.style.backgroundColor;
+};
 
 const wizards = createRandomWizards(WIZARDS_QUANTITY);
 
@@ -149,6 +170,10 @@ setupClose.addEventListener(`keydown`, function (evt) {
     closePopup(setup);
   }
 });
+
+wizardCoatColor.addEventListener(`click`, getRandomCoatColor);
+wizardEyesColor.addEventListener(`click`, getRandomEyesColor);
+fireballColor.addEventListener(`click`, getRandomfireballColor);
 
 userNameInput.addEventListener(`input`, () => {
   var valueLength = userNameInput.value.length;
