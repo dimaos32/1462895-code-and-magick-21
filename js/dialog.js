@@ -11,7 +11,7 @@
   const userNameInput = setup.querySelector(`.setup-user-name`);
   const dialogHandle = setup.querySelector(`.upload`);
 
-  const popapOffset ={
+  const popapOffset = {
     x: 0,
     y: 0,
   };
@@ -19,7 +19,7 @@
   const resetPopapOffset = () => {
     popapOffset.x = 0;
     popapOffset.y = 0;
-  }
+  };
 
   const onSetupEscPress = (evt) => {
     if (evt.key === `Escape` && userNameInput !== document.activeElement) {
@@ -98,7 +98,7 @@
           y: moveEvt.clientY - startCoords.y,
         };
 
-        setup.style = `transform: translate(calc(-50% + ${shift.x}px), ${shift.y}px)`
+        setup.style = `transform: translate(calc(-50% + ${shift.x}px), ${shift.y}px)`;
 
         popapOffset.x = shift.x;
         popapOffset.y = shift.y;
