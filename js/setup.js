@@ -114,13 +114,13 @@ const onSetupEscPress = (evt) => {
   }
 };
 
-const openPopup = (popup) => {
-  popup.classList.remove(`hidden`);
+const openPopup = () => {
+  setup.classList.remove(`hidden`);
   document.addEventListener(`keydown`, onSetupEscPress);
 };
 
-const closePopup = (popup) => {
-  popup.classList.add(`hidden`);
+const closePopup = () => {
+  setup.classList.add(`hidden`);
   document.removeEventListener(`keydown`, onSetupEscPress);
 };
 
@@ -138,48 +138,38 @@ const getRandomEyesColor = () => {
   wizardEyesColorInput.value = color;
 };
 
-const getRandomfireballColor = () => {
+const getRandomFireballColor = () => {
   const color = DB_WIZARDS.fireballColor[window.getRandomIntNumber(0, DB_WIZARDS.fireballColor.length - 1)];
 
   fireballColor.style.backgroundColor = color;
   fireballColorInput.value = color;
 };
 
-const wizards = createRandomWizards(WIZARDS_QUANTITY);
-
-for (let i = 0; i < wizards.length; i++) {
-  fragment.append(renderWizard(wizards[i]));
-}
-
-setupSimilarList.append(fragment);
-
-setup.querySelector(`.setup-similar`).classList.remove(`hidden`);
-
-setupOpen.addEventListener(`click`, function () {
-  openPopup(setup);
+setupOpen.addEventListener(`click`, () => {
+  openPopup();
 });
 
-setupOpen.addEventListener(`keydown`, function (evt) {
+setupOpen.addEventListener(`keydown`, (evt) => {
   if (evt.key === `Enter`) {
     evt.preventDefault();
-    openPopup(setup);
+    openPopup();
   }
 });
 
-setupClose.addEventListener(`click`, function () {
-  closePopup(setup);
+setupClose.addEventListener(`click`, () => {
+  closePopup();
 });
 
-setupClose.addEventListener(`keydown`, function (evt) {
+setupClose.addEventListener(`keydown`, (evt) => {
   if (evt.key === `Enter`) {
     evt.preventDefault();
-    closePopup(setup);
+    closePopup();
   }
 });
 
 wizardCoatColor.addEventListener(`click`, getRandomCoatColor);
 wizardEyesColor.addEventListener(`click`, getRandomEyesColor);
-fireballColor.addEventListener(`click`, getRandomfireballColor);
+fireballColor.addEventListener(`click`, getRandomFireballColor);
 
 userNameInput.addEventListener(`input`, () => {
   const valueLength = userNameInput.value.length;
@@ -194,3 +184,13 @@ userNameInput.addEventListener(`input`, () => {
 
   userNameInput.reportValidity();
 });
+
+const wizards = createRandomWizards(WIZARDS_QUANTITY);
+
+for (let i = 0; i < wizards.length; i++) {
+  fragment.append(renderWizard(wizards[i]));
+}
+
+setupSimilarList.append(fragment);
+
+setup.querySelector(`.setup-similar`).classList.remove(`hidden`);
