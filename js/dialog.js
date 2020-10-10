@@ -10,6 +10,7 @@
   const setupClose = setup.querySelector(`.setup-close`);
   const userNameInput = setup.querySelector(`.setup-user-name`);
   const dialogLever = setup.querySelector(`.upload`);
+  const form = setup.querySelector(`.setup-wizard-form`);
 
   const popupOffset = {
     x: 0,
@@ -126,6 +127,13 @@
       document.addEventListener(`mousemove`, onMouseMove);
       document.addEventListener(`mouseup`, onMouseUp);
     }
+  });
+
+  form.addEventListener(`submit`, (evt) => {
+    window.backend.upload(new FormData(form), () => {
+      setup.classList.add(`hidden`);
+    });
+    evt.preventDefault();
   });
 
 })();
