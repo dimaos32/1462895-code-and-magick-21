@@ -16,10 +16,10 @@
 
     xhr.open(method, url);
     if (method === `POST`) {
-      xhr.send(data)
+      xhr.send(data);
     } else {
       xhr.send();
-    };
+    }
 
     xhr.addEventListener(`load`, () => {
       if (xhr.status === StatusCode.OK) {
