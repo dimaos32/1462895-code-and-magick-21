@@ -72,7 +72,7 @@
     colorFireballInput.value = color;
   };
 
-  const onSuccess = (wizards) => {
+  const onLoadSuccess = (wizards) => {
     const fragment = document.createDocumentFragment();
 
     window.util.getRandomArrayElements(wizards, WIZARDS_QUANTITY)
@@ -84,24 +84,11 @@
     setup.querySelector(`.setup-similar`).classList.remove(`hidden`);
   };
 
-  const onError = (message) => {
-    const node = document.createElement(`div`);
-
-    node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
-    node.style.position = `absolute`;
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = `30px`;
-
-    node.textContent = message;
-    document.body.insertAdjacentElement(`afterbegin`, node);
-  };
-
   wizardcolorCoat.addEventListener(`click`, getRandomcolorCoat);
   wizardcolorEyes.addEventListener(`click`, getRandomcolorEyes);
   colorFireball.addEventListener(`click`, getRandomcolorFireball);
 
-  window.backend.load(onSuccess, onError);
+  window.backend.load(onLoadSuccess, window.backend.onError);
 
 })();
 

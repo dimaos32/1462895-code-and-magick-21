@@ -55,6 +55,10 @@
     userNameInput.reportValidity();
   };
 
+  const onSendSuccess = () => {
+    setup.classList.add(`hidden`);
+  }
+
   setupOpen.addEventListener(`click`, () => {
     openPopup();
   });
@@ -130,9 +134,7 @@
   });
 
   form.addEventListener(`submit`, (evt) => {
-    window.backend.upload(new FormData(form), () => {
-      setup.classList.add(`hidden`);
-    });
+    window.backend.send(new FormData(form), onSendSuccess, window.backend.onError);
     evt.preventDefault();
   });
 
