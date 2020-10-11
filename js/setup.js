@@ -52,27 +52,6 @@
     return wizardPreset;
   };
 
-  const onCoatClick = () => {
-    const color = DB_WIZARDS.colorCoat[window.util.getRandomIntNumber(0, DB_WIZARDS.colorCoat.length - 1)];
-
-    wizardColorCoat.style.fill = color;
-    wizardColorCoatInput.value = color;
-  };
-
-  const onEyesClick = () => {
-    const color = DB_WIZARDS.colorEyes[window.util.getRandomIntNumber(0, DB_WIZARDS.colorEyes.length - 1)];
-
-    wizardColorEyes.style.fill = color;
-    wizardColorEyesInput.value = color;
-  };
-
-  const onFireballClick = () => {
-    const color = DB_WIZARDS.colorFireball[window.util.getRandomIntNumber(0, DB_WIZARDS.colorFireball.length - 1)];
-
-    colorFireball.style.backgroundColor = color;
-    colorFireballInput.value = color;
-  };
-
   const onSetupPlayerClick = (evt) => {
     switch (evt.target.classList.value) {
       case `wizard-coat`:
@@ -108,7 +87,7 @@
         colorFireballInput.value = newColorFireball;
         break;
     }
-  }
+  };
 
   const onLoadSuccess = (wizards) => {
     const fragment = document.createDocumentFragment();
@@ -121,10 +100,6 @@
     setupSimilarList.append(fragment);
     setup.querySelector(`.setup-similar`).classList.remove(`hidden`);
   };
-
-  // wizardColorCoat.addEventListener(`click`, onCoatClick);
-  // wizardColorEyes.addEventListener(`click`, onEyesClick);
-  // colorFireball.addEventListener(`click`, onFireballClick);
   setupPlayer.addEventListener(`click`, onSetupPlayerClick);
 
   window.backend.load(onLoadSuccess, window.backend.onError);

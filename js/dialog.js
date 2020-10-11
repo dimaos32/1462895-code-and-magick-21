@@ -57,7 +57,7 @@
 
   const onSendSuccess = () => {
     setup.classList.add(`hidden`);
-  }
+  };
 
   setupOpen.addEventListener(`click`, () => {
     openPopup();

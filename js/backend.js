@@ -15,7 +15,11 @@
     xhr.timeout = TIMEOUT;
 
     xhr.open(method, url);
-    method === `POST` ? xhr.send(data) : xhr.send();
+    if (method === `POST`) {
+      xhr.send(data)
+    } else {
+      xhr.send();
+    };
 
     xhr.addEventListener(`load`, () => {
       if (xhr.status === StatusCode.OK) {
@@ -31,7 +35,7 @@
     xhr.addEventListener(`timeout`, function () {
       onError(`Запрос не успел выполниться за ${xhr.timeout / 1000} с`);
     });
-  }
+  };
 
   const load = (onSuccess, onError) => {
     makeRequest(`GET`, `${API_URL}/data`, onSuccess, onError);
@@ -44,7 +48,7 @@
   const onError = (message) => {
     const node = document.createElement(`div`);
 
-    node.classList.add(`error-message`)
+    node.classList.add(`error-message`);
 
     node.textContent = message;
     document.body.insertAdjacentElement(`afterbegin`, node);
