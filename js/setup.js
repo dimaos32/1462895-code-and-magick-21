@@ -3,27 +3,7 @@
 (() => {
 
   const DB_WIZARDS = {
-    name: [
-      `Иван`,
-      `Хуан Себастьян`,
-      `Мария`,
-      `Кристоф`,
-      `Виктор`,
-      `Юлия`,
-      `Люпита`,
-      `Вашингтон`,
-    ],
-    surname: [
-      `да Марья`,
-      `Верон`,
-      `Мирабелла`,
-      `Вальц`,
-      `Онопко`,
-      `Топольницкая`,
-      `Нионго`,
-      `Ирвинг`,
-    ],
-    coatColor: [
+    colorCoat: [
       `rgb(101, 137, 164)`,
       `rgb(241, 43, 107)`,
       `rgb(146, 100, 161)`,
@@ -31,14 +11,14 @@
       `rgb(215, 210, 55)`,
       `rgb(0, 0, 0)`,
     ],
-    eyesColor: [
+    colorEyes: [
       `black`,
       `red`,
       `blue`,
       `yellow`,
       `green`,
     ],
-    fireballColor: [
+    colorFireball: [
       `#ee4830`,
       `#e6e848`,
       `#30a8ee`,
@@ -54,75 +34,75 @@
   const wizardTemplate = document.querySelector(`#similar-wizard-template`)
     .content
     .querySelector(`.setup-similar-item`);
-  const fragment = document.createDocumentFragment();
-  const wizardCoatColor = setup.querySelector(`.setup-wizard .wizard-coat`);
-  const wizardCoatColorInput = setup.querySelector(`input[name = coat-color]`);
-  const wizardEyesColor = setup.querySelector(`.setup-wizard .wizard-eyes`);
-  const wizardEyesColorInput = setup.querySelector(`input[name = eyes-color]`);
-  const fireballColor = setup.querySelector(`.setup-fireball-wrap`);
-  const fireballColorInput = setup.querySelector(`input[name = fireball-color]`);
-
-  const createRandomWizards = (n = 4) => {
-    const randomWizards = [];
-
-    const names = window.util.getRandomArrayElements(DB_WIZARDS.name, n);
-    const surnames = window.util.getRandomArrayElements(DB_WIZARDS.surname, n);
-
-    for (let i = 0; i < n && i < DB_WIZARDS.name.length && i < DB_WIZARDS.surname.length; i++) {
-      randomWizards.push({
-        name: `${names[i]} ${surnames[i]}`,
-        coatColor: DB_WIZARDS.coatColor[window.util.getRandomIntNumber(0, DB_WIZARDS.coatColor.length - 1)],
-        eyesColor: DB_WIZARDS.eyesColor[window.util.getRandomIntNumber(0, DB_WIZARDS.eyesColor.length - 1)]
-      });
-    }
-
-    return randomWizards;
-  };
+  const setupPlayer = setup.querySelector(`.setup-player`);
+  const wizardColorCoat = setup.querySelector(`.setup-wizard .wizard-coat`);
+  const wizardColorCoatInput = setup.querySelector(`input[name = coat-color]`);
+  const wizardColorEyes = setup.querySelector(`.setup-wizard .wizard-eyes`);
+  const wizardColorEyesInput = setup.querySelector(`input[name = eyes-color]`);
+  const colorFireball = setup.querySelector(`.setup-fireball-wrap`);
+  const colorFireballInput = setup.querySelector(`input[name = fireball-color]`);
 
   const renderWizard = (wizard) => {
     const wizardPreset = wizardTemplate.cloneNode(true);
 
     wizardPreset.querySelector(`.setup-similar-label`).textContent = wizard.name;
-    wizardPreset.querySelector(`.wizard-coat`).style.fill = wizard.coatColor;
-    wizardPreset.querySelector(`.wizard-eyes`).style.fill = wizard.eyesColor;
+    wizardPreset.querySelector(`.wizard-coat`).style.fill = wizard.colorCoat;
+    wizardPreset.querySelector(`.wizard-eyes`).style.fill = wizard.colorEyes;
 
     return wizardPreset;
   };
 
-  const getRandomCoatColor = () => {
-    const color = DB_WIZARDS.coatColor[window.util.getRandomIntNumber(0, DB_WIZARDS.coatColor.length - 1)];
+  const onSetupPlayerClick = (evt) => {
+    switch (evt.target.classList.value) {
+      case `wizard-coat`:
+        let newColorCoat;
 
-    wizardCoatColor.style.fill = color;
-    wizardCoatColorInput.value = color;
+        do {
+          newColorCoat = DB_WIZARDS.colorCoat[window.util.getRandomIntNumber(0, DB_WIZARDS.colorCoat.length - 1)];
+        } while (newColorCoat === wizardColorCoatInput.value);
+
+        wizardColorCoat.style.fill = newColorCoat;
+        wizardColorCoatInput.value = newColorCoat;
+        break;
+
+      case `wizard-eyes`:
+        let newColorEyes;
+
+        do {
+          newColorEyes = DB_WIZARDS.colorEyes[window.util.getRandomIntNumber(0, DB_WIZARDS.colorEyes.length - 1)];
+        } while (newColorEyes === wizardColorEyesInput.value);
+
+        wizardColorEyes.style.fill = newColorEyes;
+        wizardColorEyesInput.value = newColorEyes;
+        break;
+
+      case `setup-fireball`:
+        let newColorFireball;
+
+        do {
+          newColorFireball = DB_WIZARDS.colorFireball[window.util.getRandomIntNumber(0, DB_WIZARDS.colorFireball.length - 1)];
+        } while (newColorFireball === colorFireballInput.value);
+
+        colorFireball.style.backgroundColor = newColorFireball;
+        colorFireballInput.value = newColorFireball;
+        break;
+    }
   };
 
-  const getRandomEyesColor = () => {
-    const color = DB_WIZARDS.eyesColor[window.util.getRandomIntNumber(0, DB_WIZARDS.eyesColor.length - 1)];
+  const onLoadSuccess = (wizards) => {
+    const fragment = document.createDocumentFragment();
 
-    wizardEyesColor.style.fill = color;
-    wizardEyesColorInput.value = color;
+    window.util.getRandomArrayElements(wizards, WIZARDS_QUANTITY)
+    .forEach((wizard) => {
+      fragment.append(renderWizard(wizard));
+    });
+
+    setupSimilarList.append(fragment);
+    setup.querySelector(`.setup-similar`).classList.remove(`hidden`);
   };
+  setupPlayer.addEventListener(`click`, onSetupPlayerClick);
 
-  const getRandomFireballColor = () => {
-    const color = DB_WIZARDS.fireballColor[window.util.getRandomIntNumber(0, DB_WIZARDS.fireballColor.length - 1)];
-
-    fireballColor.style.backgroundColor = color;
-    fireballColorInput.value = color;
-  };
-
-  const wizards = createRandomWizards(WIZARDS_QUANTITY);
-
-  for (let i = 0; i < wizards.length; i++) {
-    fragment.append(renderWizard(wizards[i]));
-  }
-
-  setupSimilarList.append(fragment);
-
-  setup.querySelector(`.setup-similar`).classList.remove(`hidden`);
-
-  wizardCoatColor.addEventListener(`click`, getRandomCoatColor);
-  wizardEyesColor.addEventListener(`click`, getRandomEyesColor);
-  fireballColor.addEventListener(`click`, getRandomFireballColor);
+  window.backend.load(onLoadSuccess, window.backend.onError);
 
 })();
 

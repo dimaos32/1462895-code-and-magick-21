@@ -9,16 +9,17 @@
   const setupOpen = document.querySelector(`.setup-open`);
   const setupClose = setup.querySelector(`.setup-close`);
   const userNameInput = setup.querySelector(`.setup-user-name`);
-  const dialogHandle = setup.querySelector(`.upload`);
+  const dialogLever = setup.querySelector(`.upload`);
+  const form = setup.querySelector(`.setup-wizard-form`);
 
-  const popapOffset = {
+  const popupOffset = {
     x: 0,
     y: 0,
   };
 
-  const resetPopapOffset = () => {
-    popapOffset.x = 0;
-    popapOffset.y = 0;
+  const resetpopupOffset = () => {
+    popupOffset.x = 0;
+    popupOffset.y = 0;
   };
 
   const onSetupEscPress = (evt) => {
@@ -36,11 +37,11 @@
   const closePopup = () => {
     setup.classList.add(`hidden`);
     setup.style = `transform: translateX(-50%);`;
-    resetPopapOffset();
+    resetpopupOffset();
     document.removeEventListener(`keydown`, onSetupEscPress);
   };
 
-  const validateUserName = () => {
+  const onInputUserName = () => {
     const valueLength = userNameInput.value.length;
 
     if (valueLength < MIN_NAME_LENGTH) {
@@ -52,6 +53,10 @@
     }
 
     userNameInput.reportValidity();
+  };
+
+  const onSendSuccess = () => {
+    setup.classList.add(`hidden`);
   };
 
   setupOpen.addEventListener(`click`, () => {
@@ -75,15 +80,15 @@
       closePopup();
     }
   });
-  userNameInput.addEventListener(`input`, validateUserName);
+  userNameInput.addEventListener(`input`, onInputUserName);
 
-  dialogHandle.addEventListener(`mousedown`, (evt) => {
+  dialogLever.addEventListener(`mousedown`, (evt) => {
     if (evt.button === 0) {
       evt.preventDefault();
 
       const startCoords = {
-        x: evt.clientX - popapOffset.x,
-        y: evt.clientY - popapOffset.y,
+        x: evt.clientX - popupOffset.x,
+        y: evt.clientY - popupOffset.y,
       };
 
       let isMoved = false;
@@ -100,8 +105,8 @@
 
         setup.style = `transform: translate(calc(-50% + ${shift.x}px), ${shift.y}px)`;
 
-        popapOffset.x = shift.x;
-        popapOffset.y = shift.y;
+        popupOffset.x = shift.x;
+        popupOffset.y = shift.y;
       };
 
       const onMouseUp = (upEvt) => {
@@ -114,18 +119,23 @@
         startCoords.y = upEvt.clientY;
 
         if (isMoved) {
-          const onDialogHandleClick = (clickEvt) => {
+          const onDialogLeverClick = (clickEvt) => {
             clickEvt.preventDefault();
-            dialogHandle.removeEventListener(`click`, onDialogHandleClick);
+            dialogLever.removeEventListener(`click`, onDialogLeverClick);
           };
 
-          dialogHandle.addEventListener(`click`, onDialogHandleClick);
+          dialogLever.addEventListener(`click`, onDialogLeverClick);
         }
       };
 
       document.addEventListener(`mousemove`, onMouseMove);
       document.addEventListener(`mouseup`, onMouseUp);
     }
+  });
+
+  form.addEventListener(`submit`, (evt) => {
+    window.backend.send(new FormData(form), onSendSuccess, window.backend.onError);
+    evt.preventDefault();
   });
 
 })();
