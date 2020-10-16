@@ -108,7 +108,8 @@
         break;
     }
 
-    updateWizards();
+    // updateWizards();
+    window.debounce(updateWizards);
   };
 
   setupPlayer.addEventListener(`click`, onSetupPlayerClick);
