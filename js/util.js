@@ -21,9 +21,25 @@
     return randomArray;
   };
 
+  const debounce = (cb, interval) => {
+    let lastTimeout = null;
+
+    return (...args) => {
+
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+
+      lastTimeout = window.setTimeout(() => {
+        cb.apply(null, [...args]);
+      }, interval);
+    };
+  };
+
   window.util = {
     getRandomIntNumber,
     getRandomArrayElements,
+    debounce,
   };
 
 })();
