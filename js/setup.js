@@ -2,6 +2,8 @@
 
 (() => {
 
+  const DEBOUNCE_INTERVAL = 250;
+
   const DB_WIZARDS = {
     colorCoat: [
       `rgb(101, 137, 164)`,
@@ -27,80 +29,85 @@
     ],
   };
 
-  const WIZARDS_QUANTITY = 4;
-
   const setup = document.querySelector(`.setup`);
-  const setupSimilarList = setup.querySelector(`.setup-similar-list`);
-  const wizardTemplate = document.querySelector(`#similar-wizard-template`)
-    .content
-    .querySelector(`.setup-similar-item`);
   const setupPlayer = setup.querySelector(`.setup-player`);
-  const wizardColorCoat = setup.querySelector(`.setup-wizard .wizard-coat`);
-  const wizardColorCoatInput = setup.querySelector(`input[name = coat-color]`);
-  const wizardColorEyes = setup.querySelector(`.setup-wizard .wizard-eyes`);
-  const wizardColorEyesInput = setup.querySelector(`input[name = eyes-color]`);
-  const colorFireball = setup.querySelector(`.setup-fireball-wrap`);
-  const colorFireballInput = setup.querySelector(`input[name = fireball-color]`);
+  const wizardCoatColor = setup.querySelector(`.setup-wizard .wizard-coat`);
+  const wizardCoatColorInput = setup.querySelector(`input[name = coat-color]`);
+  const wizardEyesColor = setup.querySelector(`.setup-wizard .wizard-eyes`);
+  const wizardEyesColorInput = setup.querySelector(`input[name = eyes-color]`);
+  const fireballColor = setup.querySelector(`.setup-fireball`);
+  const fireballColorInput = setup.querySelector(`input[name = fireball-color]`);
 
-  const renderWizard = (wizard) => {
-    const wizardPreset = wizardTemplate.cloneNode(true);
+  let currentWizardCoatColor = wizardCoatColorInput.value;
+  let currentWizardEyesColor = wizardEyesColorInput.value;
+  let wizards = [];
 
-    wizardPreset.querySelector(`.setup-similar-label`).textContent = wizard.name;
-    wizardPreset.querySelector(`.wizard-coat`).style.fill = wizard.colorCoat;
-    wizardPreset.querySelector(`.wizard-eyes`).style.fill = wizard.colorEyes;
+  const getRank = (wizard) => {
+    let rank = 0;
 
-    return wizardPreset;
+    if (wizard.colorCoat === currentWizardCoatColor) {
+      rank += 2;
+    }
+
+    if (wizard.colorEyes === currentWizardEyesColor) {
+      rank++;
+    }
+
+    return rank;
+  };
+
+  const updateWizards = () => {
+    wizards.sort((left, right) => {
+      let rankDiff = getRank(right) - getRank(left);
+      if (rankDiff === 0) {
+        rankDiff = -1;
+        if (Math.random() > 0.5) {
+          rankDiff = 1;
+        }
+      }
+      return rankDiff;
+    });
+
+    window.render.renderWizards(wizards);
+  };
+
+  const changeColor = (item) => {
+    let newColor;
+    do {
+      newColor = DB_WIZARDS[item][window.util.getRandomIntNumber(0, DB_WIZARDS[item].length - 1)];
+    } while (newColor === wizardCoatColorInput.value);
+    return newColor;
   };
 
   const onSetupPlayerClick = (evt) => {
-    switch (evt.target.classList.value) {
-      case `wizard-coat`:
-        let newColorCoat;
-
-        do {
-          newColorCoat = DB_WIZARDS.colorCoat[window.util.getRandomIntNumber(0, DB_WIZARDS.colorCoat.length - 1)];
-        } while (newColorCoat === wizardColorCoatInput.value);
-
-        wizardColorCoat.style.fill = newColorCoat;
-        wizardColorCoatInput.value = newColorCoat;
+    switch (evt.target) {
+      case wizardCoatColor:
+        wizardCoatColorInput.value = changeColor(`colorCoat`);
+        wizardCoatColor.style.fill = wizardCoatColorInput.value;
+        currentWizardCoatColor = wizardCoatColorInput.value;
         break;
 
-      case `wizard-eyes`:
-        let newColorEyes;
-
-        do {
-          newColorEyes = DB_WIZARDS.colorEyes[window.util.getRandomIntNumber(0, DB_WIZARDS.colorEyes.length - 1)];
-        } while (newColorEyes === wizardColorEyesInput.value);
-
-        wizardColorEyes.style.fill = newColorEyes;
-        wizardColorEyesInput.value = newColorEyes;
+      case wizardEyesColor:
+        wizardEyesColorInput.value = changeColor(`colorEyes`);
+        wizardEyesColor.style.fill = wizardEyesColorInput.value;
+        currentWizardEyesColor = wizardEyesColorInput.value;
         break;
 
-      case `setup-fireball`:
-        let newColorFireball;
-
-        do {
-          newColorFireball = DB_WIZARDS.colorFireball[window.util.getRandomIntNumber(0, DB_WIZARDS.colorFireball.length - 1)];
-        } while (newColorFireball === colorFireballInput.value);
-
-        colorFireball.style.backgroundColor = newColorFireball;
-        colorFireballInput.value = newColorFireball;
+      case fireballColor:
+        fireballColorInput.value = changeColor(`colorFireball`);
+        fireballColor.style.backgroundColor = fireballColorInput.value;
         break;
     }
+
+    updateWizards();
   };
 
-  const onLoadSuccess = (wizards) => {
-    const fragment = document.createDocumentFragment();
+  setupPlayer.addEventListener(`click`, window.util.debounce(onSetupPlayerClick, DEBOUNCE_INTERVAL));
 
-    window.util.getRandomArrayElements(wizards, WIZARDS_QUANTITY)
-    .forEach((wizard) => {
-      fragment.append(renderWizard(wizard));
-    });
-
-    setupSimilarList.append(fragment);
-    setup.querySelector(`.setup-similar`).classList.remove(`hidden`);
+  const onLoadSuccess = (data) => {
+    wizards = data;
+    updateWizards();
   };
-  setupPlayer.addEventListener(`click`, onSetupPlayerClick);
 
   window.backend.load(onLoadSuccess, window.backend.onError);
 
