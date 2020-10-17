@@ -2,7 +2,7 @@
 
 (() => {
 
-  const DEBOUNCE_INTERVAL = 500;
+  const DEBOUNCE_INTERVAL = 250;
 
   const DB_WIZARDS = {
     colorCoat: [
@@ -73,40 +73,35 @@
   };
 
   const onSetupPlayerClick = (evt) => {
+    let newColor;
     switch (evt.target) {
       case wizardCoatColor:
-        let newCoatColor;
-
         do {
-          newCoatColor = window.util.getRandomArrayElements(DB_WIZARDS.colorCoat)[0];
-        } while (newCoatColor === wizardCoatColorInput.value);
+          newColor = DB_WIZARDS.colorCoat[window.util.getRandomIntNumber(0, DB_WIZARDS.colorCoat.length - 1)];
+        } while (newColor === wizardCoatColorInput.value);
 
-        wizardCoatColor.style.fill = newCoatColor;
-        wizardCoatColorInput.value = newCoatColor;
-        currentWizardCoatColor = newCoatColor;
+        wizardCoatColor.style.fill = newColor;
+        wizardCoatColorInput.value = newColor;
+        currentWizardCoatColor = newColor;
         break;
 
       case wizardEyesColor:
-        let newEyesColor;
-
         do {
-          newEyesColor = window.util.getRandomArrayElements(DB_WIZARDS.colorEyes)[0];
-        } while (newEyesColor === wizardEyesColorInput.value);
+          newColor = DB_WIZARDS.colorEyes[window.util.getRandomIntNumber(0, DB_WIZARDS.colorEyes.length - 1)];
+        } while (newColor === wizardEyesColorInput.value);
 
-        wizardEyesColor.style.fill = newEyesColor;
-        wizardEyesColorInput.value = newEyesColor;
-        currentWizardEyesColor = newEyesColor;
+        wizardEyesColor.style.fill = newColor;
+        wizardEyesColorInput.value = newColor;
+        currentWizardEyesColor = newColor;
         break;
 
       case fireballColor:
-        let newfireballColor;
-
         do {
-          newfireballColor = window.util.getRandomArrayElements(DB_WIZARDS.colorFireball)[0];
-        } while (newfireballColor === fireballColorInput.value);
+          newColor = DB_WIZARDS.colorFireball[window.util.getRandomIntNumber(0, DB_WIZARDS.colorFireball.length - 1)];
+        } while (newColor === fireballColorInput.value);
 
-        fireballColor.style.backgroundColor = newfireballColor;
-        fireballColorInput.value = newfireballColor;
+        fireballColor.style.backgroundColor = newColor;
+        fireballColorInput.value = newColor;
         break;
     }
 
