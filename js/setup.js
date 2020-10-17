@@ -72,36 +72,31 @@
     window.render.renderWizards(wizards);
   };
 
-  const onSetupPlayerClick = (evt) => {
+  const changeColor = (item) => {
     let newColor;
+    do {
+      newColor = DB_WIZARDS[item][window.util.getRandomIntNumber(0, DB_WIZARDS[item].length - 1)];
+    } while (newColor === wizardCoatColorInput.value);
+    return newColor;
+  };
+
+  const onSetupPlayerClick = (evt) => {
     switch (evt.target) {
       case wizardCoatColor:
-        do {
-          newColor = DB_WIZARDS.colorCoat[window.util.getRandomIntNumber(0, DB_WIZARDS.colorCoat.length - 1)];
-        } while (newColor === wizardCoatColorInput.value);
-
-        wizardCoatColor.style.fill = newColor;
-        wizardCoatColorInput.value = newColor;
-        currentWizardCoatColor = newColor;
+        wizardCoatColorInput.value = changeColor(`colorCoat`);
+        wizardCoatColor.style.fill = wizardCoatColorInput.value;
+        currentWizardCoatColor = wizardCoatColorInput.value;
         break;
 
       case wizardEyesColor:
-        do {
-          newColor = DB_WIZARDS.colorEyes[window.util.getRandomIntNumber(0, DB_WIZARDS.colorEyes.length - 1)];
-        } while (newColor === wizardEyesColorInput.value);
-
-        wizardEyesColor.style.fill = newColor;
-        wizardEyesColorInput.value = newColor;
-        currentWizardEyesColor = newColor;
+        wizardEyesColorInput.value = changeColor(`colorEyes`);
+        wizardEyesColor.style.fill = wizardEyesColorInput.value;
+        currentWizardEyesColor = wizardEyesColorInput.value;
         break;
 
       case fireballColor:
-        do {
-          newColor = DB_WIZARDS.colorFireball[window.util.getRandomIntNumber(0, DB_WIZARDS.colorFireball.length - 1)];
-        } while (newColor === fireballColorInput.value);
-
-        fireballColor.style.backgroundColor = newColor;
-        fireballColorInput.value = newColor;
+        fireballColorInput.value = changeColor(`colorFireball`);
+        fireballColor.style.backgroundColor = fireballColorInput.value;
         break;
     }
 
