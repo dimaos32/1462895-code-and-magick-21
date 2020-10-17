@@ -24,7 +24,7 @@
   const debounce = (cb, interval) => {
     let lastTimeout = null;
 
-    return (...args) => {
+    return function (...args) {
 
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);

@@ -60,10 +60,9 @@
     wizards.sort((left, right) => {
       let rankDiff = getRank(right) - getRank(left);
       if (rankDiff === 0) {
-        if (Math.floor(Math.random() + 0.5)) {
+        rankDiff = -1;
+        if (Math.random() > 0.5) {
           rankDiff = 1;
-        } else {
-          rankDiff = -1;
         }
       }
       return rankDiff;
