@@ -1,6 +1,6 @@
 'use strict';
 
-const DEBOUNCE_INTERVAL = 250;
+const DEBOUNCE_INTERVAL = 500;
 
 const getRandomIntNumber = (min = 0, max = 100) => {
   return min + Math.floor(Math.random() * (max - min + 1));
