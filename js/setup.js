@@ -2,8 +2,6 @@
 
 (() => {
 
-  const DEBOUNCE_INTERVAL = 250;
-
   const DB_WIZARDS = {
     colorCoat: [
       `rgb(101, 137, 164)`,
@@ -102,7 +100,7 @@
     updateWizards();
   };
 
-  setupPlayer.addEventListener(`click`, window.util.debounce(onSetupPlayerClick, DEBOUNCE_INTERVAL));
+  setupPlayer.addEventListener(`click`, window.util.debounce(onSetupPlayerClick));
 
   const onLoadSuccess = (data) => {
     wizards = data;

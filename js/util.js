@@ -2,6 +2,8 @@
 
 (() => {
 
+  const DEBOUNCE_INTERVAL = 250;
+
   const getRandomIntNumber = (min = 0, max = 100) => {
     return min + Math.floor(Math.random() * (max - min + 1));
   };
@@ -21,7 +23,7 @@
     return randomArray;
   };
 
-  const debounce = (cb, interval) => {
+  const debounce = (cb, interval = DEBOUNCE_INTERVAL) => {
     let lastTimeout = null;
 
     return function (...args) {
