@@ -16,4 +16,7 @@ module.exports = {
     iife: true,
   },
   devtool: false,
+  devServer: {
+    port: 8003,
+  },
 };
