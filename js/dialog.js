@@ -3,9 +3,13 @@
 const MIN_NAME_LENGTH = 2;
 const MAX_NAME_LENGTH = 25;
 
+const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
+
 const setup = document.querySelector(`.setup`);
 const setupOpen = document.querySelector(`.setup-open`);
 const setupClose = setup.querySelector(`.setup-close`);
+const fileChooser = setup.querySelector(`.upload input[type=file]`);
+const avatarPreview = setup.querySelector(`.setup-user-pic`);
 const userNameInput = setup.querySelector(`.setup-user-name`);
 const dialogLever = setup.querySelector(`.upload`);
 const form = setup.querySelector(`.setup-wizard-form`);
@@ -78,6 +82,7 @@ setupClose.addEventListener(`keydown`, (evt) => {
     closePopup();
   }
 });
+
 userNameInput.addEventListener(`input`, onInputUserName);
 
 dialogLever.addEventListener(`mousedown`, (evt) => {
@@ -128,6 +133,23 @@ dialogLever.addEventListener(`mousedown`, (evt) => {
 
     document.addEventListener(`mousemove`, onMouseMove);
     document.addEventListener(`mouseup`, onMouseUp);
+  }
+});
+
+fileChooser.addEventListener(`change`, () => {
+  const file = fileChooser.files[0];
+
+  const isPicture = FILE_TYPES.some((ending) => {
+    return file.name.toLowerCase().endsWith(ending);
+  });
+
+  if (isPicture) {
+    const reader = new FileReader();
+    reader.addEventListener(`load`, () => {
+      avatarPreview.src = reader.result;
+    });
+
+    reader.readAsDataURL(file);
   }
 });
 
